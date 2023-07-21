@@ -1,7 +1,8 @@
-import typing
-from typing import TypeVar, Generic, List
+from typing import TypeVar, Generic, List, Dict, Any, TYPE_CHECKING
 
-if typing.TYPE_CHECKING:
+from sqlalchemy import and_
+
+if TYPE_CHECKING:
     from connection import DBConnection
 
 T = TypeVar('T')
@@ -12,11 +13,16 @@ class TableHandler(Generic[T]):
         self._table = table
         self._session = dbconnection.create_session()
 
-    def query(self) -> List[T]:
+    def query(self, qfilter: Dict[str, Any]) -> List[T]:
         """
         :return:
         """
-        values = self._session.query(self._table).filter().all()
+        filters = []
+        for key, value in qfilter:
+            attr = getattr(self._table, key)
+            filters.append(attr == value)
+
+        values = self._session.query(self._table).filter(and_(*filters)).all()
         return values
 
     def close(self) -> None:
