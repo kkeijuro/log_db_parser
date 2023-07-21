@@ -18,7 +18,7 @@ class TableHandler(Generic[T]):
         :return:
         """
         filters = []
-        for key, value in qfilter:
+        for key, value in qfilter.items():
             attr = getattr(self._table, key)
             filters.append(attr == value)
 
