@@ -8,7 +8,7 @@ class Message(Base):
 
     __tablename__ = 'message'
 
-    date_added = Column(DateTime(), nullable=False),
+    date_added = Column(DateTime(), nullable=False)
     date_invalidated = Column(DateTime(), nullable=True)
     day_obs = Column(Integer(), nullable=False)
     exposure_flag = Column(String(), nullable=False)
