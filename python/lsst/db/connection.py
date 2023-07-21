@@ -29,6 +29,11 @@ class DBConnection:
         self._engine = create_engine(self._url)
         self._connection = self._engine.connect()
 
+    def stop(self) -> None:
+        """
+        :return:
+        """
+        self._connection.close()
     def create_session(self) -> Session:
         """
         :return:

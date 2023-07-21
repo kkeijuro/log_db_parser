@@ -26,3 +26,6 @@ class Message(Base):
     urls = Column(ARRAY(String()), nullable=False)
     user_agent = Column(String(), nullable=False)
     user_id = Column(String(), nullable=False)
+
+    def __repr__(self):
+        return f"log id: {self.id} message: {self.message_text}"
