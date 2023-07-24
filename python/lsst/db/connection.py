@@ -9,6 +9,8 @@ from lsst.db.message import Base
 
 
 class DBConnection:
+    """
+    """
     _DRIVER_NAME = "postgresql"
 
     _HOST_DEFAULT = "usdf-summitdb.slac.stanford.edu"
@@ -24,19 +26,20 @@ class DBConnection:
 
     def start(self) -> None:
         """
-        :return:
+        Start DB connection
         """
         self._engine = create_engine(self._url)
         self._connection = self._engine.connect()
 
     def stop(self) -> None:
         """
-        :return:
+        Stop DB connection
         """
         self._connection.close()
     def create_session(self) -> Session:
         """
-        :return:
+        Create a new session in the database
+        :return: new session created
         """
         assert(self._engine is not None)
         session_maker = sessionmaker(bind=self._engine)
@@ -44,4 +47,9 @@ class DBConnection:
         return session
 
     def get_table_handler(self, table: 'Base') ->TableHandler:
+        """
+        get a table handler for the table represented by class table
+        :param table: Class with information of the table to work with
+        :return: TableHandler object to interact with the table selected
+        """
         return TableHandler(table, self)
