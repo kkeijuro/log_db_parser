@@ -15,7 +15,7 @@ class DBConnection:
 
     _HOST_DEFAULT = "usdf-summitdb.slac.stanford.edu"
     _USERNAME_DEFAULT = "usdf"
-    _PASSWORD_DEFAULT = "d55YdYLpBD"
+    _PASSWORD_DEFAULT = ""
 
     def __init__(self, database, host=_HOST_DEFAULT, username=_USERNAME_DEFAULT,
                  password=_PASSWORD_DEFAULT) -> None:
