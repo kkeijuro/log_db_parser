@@ -19,7 +19,7 @@ class TableHandler(Generic[T]):
         self._table = table
         self._session = dbconnection.create_session()
 
-    def query(self, qfilter: Dict[str, Any]) -> List[T]:
+    def query(self, qfilter: Dict[str, Any] = {}) -> List[T]:
         """
         Simple query method
         :param qfilter: Dictionary of key value that will be used as the query filter,
