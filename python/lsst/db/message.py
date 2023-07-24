@@ -28,4 +28,4 @@ class Message(Base):
     user_id = Column(String(), nullable=False)
 
     def __repr__(self):
-        return f"log id: {self.id} message: {self.message_text}"
+        return f"log id: {self.id} date added: {self.date_added} message: {self.message_text}"
