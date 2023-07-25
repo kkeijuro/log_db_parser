@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, String, DateTime, Boolean, ARRAY, Interval
 from sqlalchemy.dialects.postgresql import UUID
 
-from common import Base
+from lsst.db.tables.common import Base
 
 class NarrativeLogMessage(Base):
 
