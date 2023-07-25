@@ -1,10 +1,9 @@
 from sqlalchemy import create_engine
 from sqlalchemy.engine import URL, Engine, Connection
 from sqlalchemy.orm import sessionmaker, Session
-from typing import Optional
+from typing import Optional, Any
 
 from lsst.db.table_handler import TableHandler
-from lsst.db.tables.common import Base
 
 
 class DBConnection:
@@ -45,7 +44,7 @@ class DBConnection:
         session = session_maker()
         return session
 
-    def get_table_handler(self, table: 'Base') ->TableHandler:
+    def get_table_handler(self, table: Any) ->TableHandler:
         """
         get a table handler for the table represented by class table
         :param table: Class with information of the table to work with

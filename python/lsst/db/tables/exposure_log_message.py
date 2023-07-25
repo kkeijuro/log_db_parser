@@ -1,7 +1,9 @@
 from sqlalchemy import Column, Integer, String, DateTime, Boolean, ARRAY
 from sqlalchemy.dialects.postgresql import UUID
 
-from lsst.db.tables.common import Base
+from lsst.db.tables.common import get_base
+
+Base = get_base()
 
 class ExposureLogMessage(Base):
 
