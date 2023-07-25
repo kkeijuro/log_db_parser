@@ -4,8 +4,7 @@ from sqlalchemy.orm import sessionmaker, Session
 from typing import Optional
 
 from lsst.db.table_handler import TableHandler
-from lsst.db.message import Base
-
+from lsst.db.tables.common import Base
 
 
 class DBConnection:
