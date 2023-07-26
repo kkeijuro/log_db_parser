@@ -1,28 +1,30 @@
-from sqlalchemy import Column, Integer, String, DateTime, Boolean, ARRAY
+from sqlalchemy import Column, Integer, String, DateTime, Boolean, ARRAY, Interval
 from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.orm import declarative_base
 
-Base = declarative_base()
+from lsst.db.tables.common import get_base
 
-class Message(Base):
+Base = get_base()
+
+class NarrativeLogMessage(Base):
 
     __tablename__ = 'message'
 
+    cscs = Column(ARRAY(String()), nullable=False)
     date_added = Column(DateTime(), nullable=False)
+    date_begin = Column(DateTime(), nullable=True)
+    date_end = Column(DateTime(), nullable=True)
     date_invalidated = Column(DateTime(), nullable=True)
-    day_obs = Column(Integer(), nullable=False)
-    exposure_flag = Column(String(), nullable=False)
     id = Column(UUID(), nullable=False, primary_key=True)
-    instrument = Column(String(), nullable=True)
     is_human = Column(Boolean(), nullable=False)
     is_valid = Column(Boolean(), nullable=False)
     level = Column(Integer(), nullable=False)
     message_text = Column(String(), nullable=False)
-    obs_id = Column(String(), nullable=False)
     parent_id = Column(UUID(), nullable=True)
-    seq_num = Column(Integer(), nullable=False)
     site_id = Column(String(), nullable=True)
+    subsystems = Column(ARRAY(String()), nullable=False)
+    systems = Column(ARRAY(String()), nullable=False)
     tags = Column(ARRAY(String()), nullable=False)
+    time_lost = Column(Interval(), nullable=False)
     urls = Column(ARRAY(String()), nullable=False)
     user_agent = Column(String(), nullable=False)
     user_id = Column(String(), nullable=False)
