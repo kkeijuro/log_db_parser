@@ -1,7 +1,9 @@
 from sqlalchemy import Column, Integer, String, DateTime, Boolean, ARRAY
 from sqlalchemy.dialects.postgresql import UUID
 
-from lsst.db.tables.common import TableDefinition, Helper
+from lsst.db.tables.common import TableDefinition
+from lsst.db.tables.qfilter import QFilter, Operation
+from lsst.db.tables.helper import Helper
 
 import typing
 if typing.TYPE_CHECKING:
@@ -38,7 +40,7 @@ class _Table(Base):
 
     def __repr__(self):
         return f"Exposure log message: Observation Day: {self.day_obs} " \
-               f"Sequence Number: {self.seq_num} " \
+               f"Exposure ID: {self.obs_id} " \
                f"date added: {self.date_added} " \
                f"message: {self.message_text} " \
                f"is valid: {self.is_valid}"
@@ -53,7 +55,9 @@ class ExposureLogHelper(Helper[_Table]):
         :param day_obs:
         :return:
         """
-        return self._table_handler.query({'day_obs': day_obs, 'is_valid': self.show_valid_messages})
+        q_filter = [QFilter('day_obs', day_obs, Operation.EQ),
+                    QFilter('is_valid', self.show_only_valid_messages_flag, Operation.EQ)]
+        return self._table_handler.query(q_filter)
 
 
 class ExposureLogDefinition(TableDefinition):

@@ -54,15 +54,19 @@ class DBConnection:
 
     @overload
     def get_table_handler(self, table: 'ExposureLogDefinition') -> 'ExposureLogHelper':
+        """
+        """
         ...
 
     @overload
     def get_table_handler(self, table: 'NarrativeLogDefinition') -> 'NarrativeLogHelper':
+        """
+        """
         ...
 
     def get_table_handler(self, table: 'TableDefinition') -> 'Union[NarrativeLogHelper | ExposureLogHelper]':
         """
-        get a table handler for the table represented by class table
+        Get a table handler for the table represented by class table
         :param table: Class with information of the table to work with
         :return: TableHandler object to interact with the table selected
         """

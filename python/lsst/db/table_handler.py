@@ -1,7 +1,8 @@
-from types import MappingProxyType
 from typing import TypeVar, Generic, List, Dict, Any, TYPE_CHECKING
 
 from sqlalchemy import and_
+
+from lsst.db.tables.qfilter import QFilter
 
 if TYPE_CHECKING:
     from connection import DBConnection
@@ -20,7 +21,7 @@ class TableHandler(Generic[T]):
         self._table = table
         self._session = dbconnection.create_session()
 
-    def query(self, qfilter: Dict[str, Any] = MappingProxyType({}), sort: List[str] = set()) -> List[T]:
+    def query(self, qfilter: List[QFilter], sort: List[str] = tuple()) -> List[T]:
         """
         Simple query method
         :param sort:
@@ -31,9 +32,9 @@ class TableHandler(Generic[T]):
         """
         filters = []
         e_sort = []
-        for key, value in qfilter.items():
-            attr = getattr(self._table, key)
-            filters.append(attr == value)
+        for c_filter in qfilter:
+            attr = getattr(self._table, c_filter.attr)
+            filters.append(c_filter.operation(attr))
 
         for value in sort:
             attr = getattr(self._table, value)
