@@ -13,7 +13,7 @@ class Operation(Enum):
 class QFilter:
     attr: str
     value: Any
-    operation: Operation
+    operator: Operation
 
     def operation(self, check_attr) -> bool:
         return check_attr == self.value
