@@ -22,22 +22,22 @@ class Helper(Generic[P]):
         self._show_valid_messages = show_valid_messages
 
     @property
-    def show_valid_messages(self) -> bool:
+    def show_valid_messages_flag(self) -> bool:
         """
         :return:
         """
         return self._show_valid_messages
 
-    @show_valid_messages.setter
-    def show_valid_messages(self, status: bool) -> None:
+    @show_valid_messages_flag.setter
+    def show_valid_messages_flag(self, status: bool) -> None:
         """
         :param status:
         :return:
         """
         self._show_valid_messages = status
 
-    def get_messages(self) -> 'List[P]':
-        return self._table_handler.query({"is_valid": self._show_valid_messages})
+    def get_messages(self, sort: 'List[str]' = set('')) -> 'List[P]':
+        return self._table_handler.query({"is_valid": self._show_valid_messages}, sort=sort)
 
 class TableDefinition(Generic[T], ABC):
 
