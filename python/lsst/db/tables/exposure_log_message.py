@@ -53,8 +53,10 @@ class ExposureLogHelper:
 
 class ExposureLogDefinition(TableDefinition):
 
-    def get_table(self) -> 'Type[_Table]':
+    @staticmethod
+    def get_table() -> 'Type[_Table]':
         return _Table
 
-    def get_helper(self, table_handler: 'TableHandler') -> ExposureLogHelper:
+    @staticmethod
+    def get_helper(table_handler: 'TableHandler') -> ExposureLogHelper:
         return ExposureLogHelper(table_handler)

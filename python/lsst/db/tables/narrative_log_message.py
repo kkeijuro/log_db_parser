@@ -55,8 +55,10 @@ class NarrativeLogHelper:
 
 class NarrativeLogDefinition(TableDefinition):
 
-    def get_table(self) -> 'Type[_Table]':
+    @staticmethod
+    def get_table() -> 'Type[_Table]':
         return _Table
 
-    def get_helper(self, table_handler: 'TableHandler') -> NarrativeLogHelper:
+    @staticmethod
+    def get_helper(table_handler: 'TableHandler') -> NarrativeLogHelper:
         return NarrativeLogHelper(table_handler)
