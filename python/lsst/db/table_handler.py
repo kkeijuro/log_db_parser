@@ -1,3 +1,4 @@
+from types import MappingProxyType
 from typing import TypeVar, Generic, List, Dict, Any, TYPE_CHECKING
 
 from sqlalchemy import and_
@@ -14,18 +15,17 @@ class TableHandler(Generic[T]):
     def __init__(self, table: T, dbconnection: 'DBConnection') -> None:
         """
         :param table: Class Object that represents the table in the database
-        :param dbconnection: db connetion instance
+        :param dbconnection: db connection instance
         """
         self._table = table
         self._session = dbconnection.create_session()
 
-    def query(self, qfilter: Dict[str, Any] = {}) -> List[T]:
+    def query(self, qfilter: Dict[str, Any] = MappingProxyType({})) -> List[T]:
         """
         Simple query method
         :param qfilter: Dictionary of key value that will be used as the query filter,
         all the items will be chained using an AND operator
-        :return: list of objects in the database
-        that match with the query.
+        :return: list of objects in the database that match with the query.
         It may return an empty list
         """
         filters = []

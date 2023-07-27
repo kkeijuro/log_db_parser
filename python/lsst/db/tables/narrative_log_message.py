@@ -1,11 +1,18 @@
 from sqlalchemy import Column, Integer, String, DateTime, Boolean, ARRAY, Interval
 from sqlalchemy.dialects.postgresql import UUID
 
-from lsst.db.tables.common import get_base
+from lsst.db.tables.common import TableDefinition
 
-Base = get_base()
+import typing
+if typing.TYPE_CHECKING:
+    from lsst.db.table_handler import TableHandler
+    from typing import List, Type
 
-class NarrativeLogMessage(Base):
+__all__ = ['NarrativeLogDefinition', 'NarrativeLogHelper']
+
+Base = TableDefinition.get_base()
+
+class _Table(Base):
 
     __tablename__ = 'message'
 
@@ -30,4 +37,26 @@ class NarrativeLogMessage(Base):
     user_id = Column(String(), nullable=False)
 
     def __repr__(self):
-        return f"log id: {self.id} date added: {self.date_added} message: {self.message_text}"
+        return  f"Narrative log message: begin date: {self.date_begin} " \
+                f"end date: {self.date_end} " \
+                f"sequence number: {self.seq_num}"\
+                f"date added: {self.date_added} " \
+                f"message: {self.message_text}" \
+                f"is valid: {self.is_valid}"
+
+class NarrativeLogHelper:
+
+    def __init__(self, table_handler: 'TableHandler'):
+        self._table_handler = table_handler
+
+    def get_message_by_observation_day(self, day_obs: int) -> 'List[_Table]':
+        return self._table_handler.query({'day_obs': day_obs})
+
+
+class NarrativeLogDefinition(TableDefinition):
+
+    def get_table(self) -> 'Type[_Table]':
+        return _Table
+
+    def get_helper(self, table_handler: 'TableHandler') -> NarrativeLogHelper:
+        return NarrativeLogHelper(table_handler)

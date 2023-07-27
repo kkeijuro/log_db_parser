@@ -1,11 +1,18 @@
 from sqlalchemy import Column, Integer, String, DateTime, Boolean, ARRAY
 from sqlalchemy.dialects.postgresql import UUID
 
-from lsst.db.tables.common import get_base
+from lsst.db.tables.common import TableDefinition
 
-Base = get_base()
+import typing
+if typing.TYPE_CHECKING:
+    from lsst.db.table_handler import TableHandler
+    from typing import List, Type
 
-class ExposureLogMessage(Base):
+__all__ = ['ExposureLogDefinition', 'ExposureLogHelper']
+
+Base = TableDefinition.get_base()
+
+class _Table(Base):
 
     __tablename__ = 'message'
 
@@ -29,4 +36,25 @@ class ExposureLogMessage(Base):
     user_id = Column(String(), nullable=False)
 
     def __repr__(self):
-        return f"log id: {self.id} date added: {self.date_added} message: {self.message_text}"
+        return f"Exposure log message: Observation Day: {self.day_obs} " \
+               f"Sequence Number: {self.seq_num}" \
+               f"date added: {self.date_added} " \
+               f"message: {self.message_text}" \
+               f"is valid: {self.is_valid}"
+
+class ExposureLogHelper:
+
+    def __init__(self, table_handler: 'TableHandler'):
+        self._table_handler = table_handler
+
+    def get_message_by_observation_day(self, day_obs: int) -> 'List[_Table]':
+        return self._table_handler.query({'day_obs': day_obs})
+
+
+class ExposureLogDefinition(TableDefinition):
+
+    def get_table(self) -> 'Type[_Table]':
+        return _Table
+
+    def get_helper(self, table_handler: 'TableHandler') -> ExposureLogHelper:
+        return ExposureLogHelper(table_handler)

@@ -1,9 +1,20 @@
 from sqlalchemy import create_engine
 from sqlalchemy.engine import URL, Engine, Connection
 from sqlalchemy.orm import sessionmaker, Session
-from typing import Optional, Any
+from typing import Optional
 
-from lsst.db.table_handler import TableHandler
+from typing_extensions import overload
+
+from lsst.db.tables.common import TableDefinition
+
+
+import typing
+if typing.TYPE_CHECKING:
+    from typing import Union
+    from lsst.db.table_handler import TableHandler
+    from lsst.db.tables.exposure_log_message import ExposureLogDefinition, ExposureLogHelper
+    from lsst.db.tables.narrative_log_message import NarrativeLogDefinition, NarrativeLogHelper
+
 
 
 class DBConnection:
@@ -44,10 +55,21 @@ class DBConnection:
         session = session_maker()
         return session
 
-    def get_table_handler(self, table: Any) ->TableHandler:
+    @overload
+    def get_table_handler(self, table: 'ExposureLogDefinition') -> 'ExposureLogHelper':
+        ...
+
+    @overload
+    def get_table_handler(self, table: 'NarrativeLogDefinition') -> 'NarrativeLogHelper':
+        ...
+
+    def get_table_handler(self, table: 'TableDefinition') -> 'Union[NarrativeLogHelper | ExposureLogHelper]':
         """
         get a table handler for the table represented by class table
         :param table: Class with information of the table to work with
         :return: TableHandler object to interact with the table selected
         """
-        return TableHandler(table, self)
+        table_class = table.get_table()
+        table_handler = TableHandler(table_class, self)
+        return table.get_helper(table_handler)
+
