@@ -19,13 +19,13 @@ class QFilter:
         if self.operator == Operator.EQ:
             return check_attr == self.value
         elif self.operator == Operator.LT:
-            return check_attr == self.value
+            return check_attr < self.value
         elif self.operator == Operator.LTE:
-            return check_attr == self.value
+            return check_attr <= self.value
         elif self.operator == Operator.GT:
-            return check_attr == self.value
+            return check_attr > self.value
         elif self.operator == Operator.GTE:
-            return check_attr == self.value
+            return check_attr >= self.value
         return False
 
 
