@@ -6,15 +6,13 @@ from typing import Optional
 from typing_extensions import overload
 
 from lsst.db.tables.common import TableDefinition
-
+from lsst.db.table_handler import TableHandler
 
 import typing
 if typing.TYPE_CHECKING:
     from typing import Union
-    from lsst.db.table_handler import TableHandler
     from lsst.db.tables.exposure_log_message import ExposureLogDefinition, ExposureLogHelper
     from lsst.db.tables.narrative_log_message import NarrativeLogDefinition, NarrativeLogHelper
-
 
 
 class DBConnection:
