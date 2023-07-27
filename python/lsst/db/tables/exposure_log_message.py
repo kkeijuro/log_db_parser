@@ -2,7 +2,7 @@ from sqlalchemy import Column, Integer, String, DateTime, Boolean, ARRAY
 from sqlalchemy.dialects.postgresql import UUID
 
 from lsst.db.tables.common import TableDefinition
-from lsst.db.tables.qfilter import QFilter, Operation
+from lsst.db.tables.qfilter import QFilter, Operator
 from lsst.db.tables.helper import Helper
 
 import typing
@@ -50,13 +50,23 @@ class ExposureLogHelper(Helper[_Table]):
     def __init__(self, table_handler: 'TableHandler'):
         super().__init__(table_handler)
 
+    def get_message_by_observation_id_interval(self, min_obs_id: int, max_obs_id: int) -> 'List[_Table]':
+        """
+        :param min_obs_id:
+        :param max_obs_id:
+        :return:
+        """
+        q_filter = [QFilter('obs_id', min_obs_id, Operator.GTE),
+                    QFilter('obs_id', max_obs_id, Operator.LTE),
+                    QFilter('is_valid', self.show_only_valid_messages_flag, Operator.EQ)]
+        return self._table_handler.query(q_filter)
     def get_message_by_observation_day(self, day_obs: int) -> 'List[_Table]':
         """
         :param day_obs:
         :return:
         """
-        q_filter = [QFilter('day_obs', day_obs, Operation.EQ),
-                    QFilter('is_valid', self.show_only_valid_messages_flag, Operation.EQ)]
+        q_filter = [QFilter('day_obs', day_obs, Operator.EQ),
+                    QFilter('is_valid', self.show_only_valid_messages_flag, Operator.EQ)]
         return self._table_handler.query(q_filter)
 
 

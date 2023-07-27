@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import Any
 
-class Operation(Enum):
+class Operator(Enum):
     EQ = 0
     GT = 1
     LT = 2
@@ -13,9 +13,19 @@ class Operation(Enum):
 class QFilter:
     attr: str
     value: Any
-    operator: Operation
+    operator: Operator
 
     def operation(self, check_attr) -> bool:
-        return check_attr == self.value
+        if self.operator == Operator.EQ:
+            return check_attr == self.value
+        elif self.operator == Operator.LT:
+            return check_attr == self.value
+        elif self.operator == Operator.LTE:
+            return check_attr == self.value
+        elif self.operator == Operator.GT:
+            return check_attr == self.value
+        elif self.operator == Operator.GTE:
+            return check_attr == self.value
+        return False
 
 

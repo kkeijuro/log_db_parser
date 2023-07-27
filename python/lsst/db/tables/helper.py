@@ -1,6 +1,9 @@
 from typing import TypeVar, Generic, List
 
 import typing
+
+from lsst.db.tables.qfilter import QFilter, Operator
+
 if typing.TYPE_CHECKING:
     from lsst.db.table_handler import TableHandler
 
@@ -31,4 +34,9 @@ class Helper(Generic[P]):
         self._show_valid_messages = status
 
     def get_messages(self, sort: 'List[str]' = tuple()) -> 'List[P]':
-        return self._table_handler.query({"is_valid": self._show_valid_messages}, sort=sort)
+        """
+        :param sort:
+        :return:
+        """
+        q_filter = [QFilter('is_valid', self.show_only_valid_messages_flag, Operator.EQ)]
+        return self._table_handler.query(q_filter, sort=sort)
