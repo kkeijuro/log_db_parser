@@ -56,8 +56,8 @@ class ExposureLogHelper(Helper[_Table]):
         :param max_obs_id:
         :return:
         """
-        q_filter = [QFilter('obs_id', min_obs_id, Operator.GTE),
-                    QFilter('obs_id', max_obs_id, Operator.LTE),
+        q_filter = [QFilter('seq_num', min_obs_id, Operator.GTE),
+                    QFilter('seq_num', max_obs_id, Operator.LTE),
                     QFilter('is_valid', self.show_only_valid_messages_flag, Operator.EQ)]
         return self._table_handler.query(q_filter)
     def get_message_by_observation_day(self, day_obs: int) -> 'List[_Table]':
