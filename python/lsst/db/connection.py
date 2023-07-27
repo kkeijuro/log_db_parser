@@ -14,7 +14,6 @@ if typing.TYPE_CHECKING:
     from lsst.db.tables.exposure_log_message import ExposureLogDefinition, ExposureLogHelper
     from lsst.db.tables.narrative_log_message import NarrativeLogDefinition, NarrativeLogHelper
 
-
 class DBConnection:
     """
     """

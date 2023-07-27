@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, String, DateTime, Boolean, ARRAY, Interval
 from sqlalchemy.dialects.postgresql import UUID
 
-from lsst.db.tables.common import TableDefinition
+from lsst.db.tables.common import TableDefinition, Helper
 
 import typing
 if typing.TYPE_CHECKING:
@@ -44,14 +44,13 @@ class _Table(Base):
                 f"message: {self.message_text}" \
                 f"is valid: {self.is_valid}"
 
-class NarrativeLogHelper:
+class NarrativeLogHelper(Helper[_Table]):
 
-    def __init__(self, table_handler: 'TableHandler'):
-        self._table_handler = table_handler
+    def __init__(self, table_handler: 'TableHandler') -> None:
+        super().__init__(table_handler)
 
     def get_message_by_observation_day(self, day_obs: int) -> 'List[_Table]':
-        return self._table_handler.query({'day_obs': day_obs})
-
+        return self._table_handler.query({'day_obs': day_obs, "is_valid": self.show_valid_messages})
 
 class NarrativeLogDefinition(TableDefinition):
 
