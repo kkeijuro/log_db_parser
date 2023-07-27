@@ -13,16 +13,27 @@ if typing.TYPE_CHECKING:
 P = TypeVar('P')
 class Helper(Generic[P]):
 
-    def __init__(self, table_handler: 'TableHandler', show_valid_messages: bool = False):
+    def __init__(self, table_handler: 'TableHandler', show_valid_messages: bool = True):
+        """
+        :param table_handler:
+        :param show_valid_messages:
+        """
         self._table_handler = table_handler
         self._show_valid_messages = show_valid_messages
 
     @property
     def show_valid_messages(self) -> bool:
+        """
+        :return:
+        """
         return self._show_valid_messages
 
     @show_valid_messages.setter
     def show_valid_messages(self, status: bool) -> None:
+        """
+        :param status:
+        :return:
+        """
         self._show_valid_messages = status
 
     def get_messages(self) -> 'List[P]':

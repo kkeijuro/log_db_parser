@@ -20,20 +20,26 @@ class TableHandler(Generic[T]):
         self._table = table
         self._session = dbconnection.create_session()
 
-    def query(self, qfilter: Dict[str, Any] = MappingProxyType({})) -> List[T]:
+    def query(self, qfilter: Dict[str, Any] = MappingProxyType({}), sort: List[str] = set()) -> List[T]:
         """
         Simple query method
+        :param sort:
         :param qfilter: Dictionary of key value that will be used as the query filter,
         all the items will be chained using an AND operator
         :return: list of objects in the database that match with the query.
         It may return an empty list
         """
         filters = []
+        e_sort = []
         for key, value in qfilter.items():
             attr = getattr(self._table, key)
             filters.append(attr == value)
 
-        values = self._session.query(self._table).filter(and_(*filters)).all()
+        for value in sort:
+            attr = getattr(self._table, value)
+            e_sort.append(attr)
+
+        values = self._session.query(self._table).filter(and_(*filters)).order_by(*e_sort).all()
         return values
 
     def close(self) -> None:

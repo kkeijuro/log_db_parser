@@ -13,6 +13,8 @@ __all__ = ['NarrativeLogDefinition', 'NarrativeLogHelper']
 Base = TableDefinition.get_base()
 
 class _Table(Base):
+    """
+    """
 
     __tablename__ = 'message'
 
@@ -39,9 +41,9 @@ class _Table(Base):
     def __repr__(self):
         return  f"Narrative log message: begin date: {self.date_begin} " \
                 f"end date: {self.date_end} " \
-                f"sequence number: {self.seq_num}"\
+                f"sequence number: {self.seq_num} "\
                 f"date added: {self.date_added} " \
-                f"message: {self.message_text}" \
+                f"message: {self.message_text} " \
                 f"is valid: {self.is_valid}"
 
 class NarrativeLogHelper(Helper[_Table]):
@@ -56,8 +58,15 @@ class NarrativeLogDefinition(TableDefinition):
 
     @staticmethod
     def get_table() -> 'Type[_Table]':
+        """
+        :return:
+        """
         return _Table
 
     @staticmethod
     def get_helper(table_handler: 'TableHandler') -> NarrativeLogHelper:
+        """
+        :param table_handler:
+        :return:
+        """
         return NarrativeLogHelper(table_handler)

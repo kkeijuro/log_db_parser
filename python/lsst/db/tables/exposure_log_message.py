@@ -13,7 +13,8 @@ __all__ = ['ExposureLogDefinition', 'ExposureLogHelper']
 Base = TableDefinition.get_base()
 
 class _Table(Base):
-
+    """
+    """
     __tablename__ = 'message'
 
     date_added = Column(DateTime(), nullable=False)
@@ -37,9 +38,9 @@ class _Table(Base):
 
     def __repr__(self):
         return f"Exposure log message: Observation Day: {self.day_obs} " \
-               f"Sequence Number: {self.seq_num}" \
+               f"Sequence Number: {self.seq_num} " \
                f"date added: {self.date_added} " \
-               f"message: {self.message_text}" \
+               f"message: {self.message_text} " \
                f"is valid: {self.is_valid}"
 
 class ExposureLogHelper(Helper[_Table]):
@@ -48,6 +49,10 @@ class ExposureLogHelper(Helper[_Table]):
         super().__init__(table_handler)
 
     def get_message_by_observation_day(self, day_obs: int) -> 'List[_Table]':
+        """
+        :param day_obs:
+        :return:
+        """
         return self._table_handler.query({'day_obs': day_obs, 'is_valid': self.show_valid_messages})
 
 
@@ -55,8 +60,15 @@ class ExposureLogDefinition(TableDefinition):
 
     @staticmethod
     def get_table() -> 'Type[_Table]':
+        """
+        :return:
+        """
         return _Table
 
     @staticmethod
     def get_helper(table_handler: 'TableHandler') -> ExposureLogHelper:
+        """
+        :param table_handler:
+        :return:
+        """
         return ExposureLogHelper(table_handler)

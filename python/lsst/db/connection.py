@@ -28,7 +28,7 @@ class DBConnection:
         self._url = URL.create(drivername=DBConnection._DRIVER_NAME, username=username,
                                host=host, database=database, password=password)
         self._connection = None # type: Optional[Connection]
-        self._engine = None #type: Optional[Engine]
+        self._engine = None # type: Optional[Engine]
 
     def start(self) -> None:
         """
