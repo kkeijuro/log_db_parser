@@ -56,7 +56,12 @@ class NarrativeLogHelper(Helper[_Table]):
     def __init__(self, table_handler: 'TableHandler') -> None:
         super().__init__(table_handler)
 
-    def get_message_by_timespan(self, date_begin: datetime, date_end: datetime) -> 'List[_Table]':
+    def get_messages_between_timespan(self, date_begin: datetime, date_end: datetime) -> 'List[_Table]':
+        """
+        :param date_begin:
+        :param date_end:
+        :return:
+        """
         q_filter = [QFilter('date_begin', date_begin, Operator.GTE),
                     QFilter('date_end', date_end, Operator.LTE),
                     QFilter('is_valid', self.show_only_valid_messages_flag, Operator.EQ)]

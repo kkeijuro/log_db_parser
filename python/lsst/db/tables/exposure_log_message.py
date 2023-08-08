@@ -50,7 +50,7 @@ class ExposureLogHelper(Helper[_Table]):
     def __init__(self, table_handler: 'TableHandler'):
         super().__init__(table_handler)
 
-    def get_message_by_seq_number_interval(self, min_seq_number: int, max_seq_number: int) -> 'List[_Table]':
+    def get_messages_by_seq_number_interval(self, min_seq_number: int, max_seq_number: int) -> 'List[_Table]':
         """
         :param min_seq_number:
         :param max_seq_number:
@@ -60,7 +60,7 @@ class ExposureLogHelper(Helper[_Table]):
                     QFilter('seq_num', max_seq_number, Operator.LTE),
                     QFilter('is_valid', self.show_only_valid_messages_flag, Operator.EQ)]
         return self._table_handler.query(q_filter)
-    def get_message_by_observation_day(self, day_obs: int) -> 'List[_Table]':
+    def get_messages_by_observation_day(self, day_obs: int) -> 'List[_Table]':
         """
         :param day_obs:
         :return:
