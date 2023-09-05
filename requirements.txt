@@ -1,2 +1,3 @@
 SQLAlchemy==2.0.19
 setuptools==68.0.0
+Flask~=2.2.3
